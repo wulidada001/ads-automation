@@ -1,0 +1,2 @@
+ADS_API_URL = 'http://127.0.0.1:50325'
+THREADS = 2
