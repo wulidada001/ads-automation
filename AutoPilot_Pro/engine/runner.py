@@ -3,7 +3,6 @@ import time
 from core.context import TaskContext
 from core.exceptions import InfraError, BusinessError, NetworkError
 
-
 class TaskRunner:
     def __init__(self, ads_client, concurrency=2):
         self.client = ads_client
@@ -13,32 +12,27 @@ class TaskRunner:
         print(f"🚀 引擎启动: 并发线程数 {self.concurrency}")
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.concurrency) as executor:
-            # 提交任务
             futures = {
-                executor.submit(self._worker, user, task_instance): user
+                executor.submit(self._worker, user, task_instance): user 
                 for user in user_list
             }
 
-            # 等待完成
             for f in concurrent.futures.as_completed(futures):
-                pass
+                pass 
 
     def _worker(self, user_info, task):
         user_id = user_info['user_id']
-        # 兼容处理：有的 API 返回 user_id，有的是 id
-        if not user_id: user_id = user_info.get('id')
-
         seq = user_info.get('serial_number', '未知')
 
         try:
-            # 1. 启动浏览器
+            # 1. 启动
             driver = self.client.start_browser(user_id)
 
-            # 2. 创建上下文
+            # 2. 上下文
             ctx = TaskContext(
-                user_id=user_id,
-                serial_number=str(seq),
-                driver=driver,
+                user_id=user_id, 
+                serial_number=seq, 
+                driver=driver, 
                 logger=None
             )
 
@@ -54,6 +48,5 @@ class TaskRunner:
         except Exception as e:
             print(f"💥 [{seq}] 未知系统错误: {e}")
         finally:
-            # 4. 关闭浏览器
-            if user_id:
-                self.client.stop_browser(user_id)
+            # 4. 关闭
+            self.client.stop_browser(user_id)

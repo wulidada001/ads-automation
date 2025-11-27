@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
 from core.context import TaskContext
 
-
 class BaseTask(ABC):
-    """所有具体任务的父类"""
-
     @abstractmethod
     def run(self, ctx: TaskContext):
-        """子类必须实现这个方法来定义具体逻辑"""
         pass

@@ -1,9 +1,9 @@
 import requests
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from core.exceptions import InfraError
-
 
 class ADSClient:
     def __init__(self, api_url):
@@ -13,8 +13,8 @@ class ADSClient:
         try:
             # 强制按序号排序
             params = {
-                "page": page,
-                "page_size": size,
+                "page": page, 
+                "page_size": size, 
                 "user_sort": '{"serial_number":"asc"}'
             }
             resp = requests.get(
